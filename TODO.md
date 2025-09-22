@@ -16,7 +16,7 @@
 #### Autenticação
 
 * [X] Implementar JWT ou OAuth2
-* [ ] Rota de login / registro / refresh token
+* [X] Rota de login / registro / refresh token
 * [X] Middleware de autenticação para rotas privadas
 
 #### CRUD de Tarefas
