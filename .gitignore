@@ -143,4 +143,5 @@ data/
 
 
 # private
-/_private
+private_key.pem
+public_key.pem

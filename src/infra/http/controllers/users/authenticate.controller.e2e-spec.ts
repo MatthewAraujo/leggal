@@ -4,21 +4,21 @@ import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
-import { userFactory } from 'test/factories/make-user'
+import { UserFactory } from 'test/factories/make-user'
 
 describe('Authenticate (E2E)', () => {
 	let app: INestApplication
-	let userFactory: userFactory
+	let userFactory: UserFactory
 
 	beforeAll(async () => {
 		const moduleRef = await Test.createTestingModule({
 			imports: [AppModule, DatabaseModule],
-			providers: [userFactory],
+			providers: [UserFactory],
 		}).compile()
 
 		app = moduleRef.createNestApplication()
 
-		userFactory = moduleRef.get(userFactory)
+		userFactory = moduleRef.get(UserFactory)
 
 		await app.init()
 	})
