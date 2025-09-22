@@ -20,4 +20,14 @@ export class InMemoryUsersRepository implements UsersRepository {
 
 		DomainEvents.dispatchEventsForAggregate(user.id)
 	}
+
+	async findById(id: string) {
+		const user = this.items.find((item) => item.id.toString() === id)
+
+		if (!user) {
+			return null
+		}
+
+		return user
+	}
 }
