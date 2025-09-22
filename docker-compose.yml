@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres
+    container_name: leggal-pg
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: leggal
+      PGDATA: /data/postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/pg:/data/postgres
+    networks:
+      - custom_net
+  cache:
+      container_name: leggal-cache
+      image: redis
+
+      ports:
+        - 6379:6379
+      volumes:
+        - ./data/redis:/data
+
+      networks:
+        - custom_net
+
+networks:
+  custom_net:
+    driver: bridge
+    name: forum_network
+
