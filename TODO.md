@@ -22,7 +22,8 @@
 #### CRUD de Tarefas
 
 * [X] Model de Tarefa (id, título, descrição, prioridade, status, timestamps)
-* [ ] Endpoints: `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
+* [X] Use Cases: `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
+* [ ] Tasks Controller and e2e tests
 * [ ] Auditoria mínima: criar/atualizar usuário + timestamp
 
 #### Integração IA
@@ -34,7 +35,7 @@
 #### Extras Backend
 
 * [X] Logs de requisições e erros
-* [ ] Healthcheck `/health`
+* [X] Healthcheck `/health`
 * [ ] Paginação em listagem de tarefas
 * [ ] Índices no banco para otimizar busca
 
