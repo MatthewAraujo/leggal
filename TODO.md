@@ -92,7 +92,7 @@
 
 ### **6️⃣ Testes**
 
-* [ ] Testes unitários para funções do backend
+* [X] Testes unitários para funções do backend
 * [ ] Testes de integração da API (CRUD + IA)
 * [ ] Testes de UI (cypress / react-testing-library)
 
@@ -101,7 +101,7 @@
 ### **7️⃣ DevEx / Ops**
 
 * [ ] Docker Compose para backend + frontend + banco
-* [ ] Logs de aplicação (console + arquivo)
+* [X] Logs de aplicação (console + arquivo)
 * [ ] Paginação / performance / índices
 * [ ] Configurar variáveis de ambiente seguras
 
@@ -109,7 +109,7 @@
 
 ### **8️⃣ Documentação**
 
-* [ ] Swagger ou Postman para API
+* [X] Swagger ou Postman para API
 * [ ] README explicando setup, rotas, IA, testes
 * [ ] DECISIONS.md: decisões de arquitetura e bibliotecas
 

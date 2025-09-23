@@ -13,21 +13,17 @@ export class LoggerMiddleware implements NestMiddleware {
     const { method, originalUrl, ip, headers } = req
     const userAgent = headers['user-agent'] || 'Unknown'
     const requestId = this.generateRequestId()
-    // biome-ignore lint/complexity/noUselessThisAlias: <explanation>
     const middleware = this
 
-    // Log incoming request
     this.logger.log(
       `🚀 ${method} ${originalUrl} - IP: ${ip} - User-Agent: ${userAgent} - RequestID: ${requestId}`
     )
 
-    // Log request body for non-GET requests (excluding sensitive data)
     if (method !== 'GET' && req.body) {
       const sanitizedBody = this.sanitizeRequestBody(req.body)
       this.logger.debug(`📦 Request Body: ${JSON.stringify(sanitizedBody)}`)
     }
 
-    // Override res.end to capture response data
     const originalEnd = res.end
     res.end = (chunk?: any, encoding?: any): Response => {
       const endTime = Date.now()
@@ -59,7 +55,6 @@ export class LoggerMiddleware implements NestMiddleware {
         middleware.logger.error('Failed to save log to database', err)
       })
 
-      // Log response body for errors (excluding sensitive data)
       if (statusCode >= 400 && chunk) {
         try {
           const responseBody = chunk.toString()

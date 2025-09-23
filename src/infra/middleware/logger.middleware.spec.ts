@@ -7,7 +7,7 @@ describe('LoggerMiddleware', () => {
   let logService: LogService
 
   const mockLogService = {
-    log: jest.fn(),
+    log: vi.fn(() => Promise.resolve()),
   }
 
   beforeEach(async () => {
@@ -40,10 +40,10 @@ describe('LoggerMiddleware', () => {
 
     const mockRes = {
       statusCode: 200,
-      end: jest.fn(),
+      end: vi.fn(),
     } as any
 
-    const mockNext = jest.fn()
+    const mockNext = vi.fn()
 
     middleware.use(mockReq, mockRes, mockNext)
 
@@ -67,10 +67,10 @@ describe('LoggerMiddleware', () => {
 
     const mockRes = {
       statusCode: 200,
-      end: jest.fn(),
+      end: vi.fn(),
     } as any
 
-    const mockNext = jest.fn()
+    const mockNext = vi.fn()
 
     middleware.use(mockReq, mockRes, mockNext)
 
@@ -80,7 +80,7 @@ describe('LoggerMiddleware', () => {
     expect(mockNext).toHaveBeenCalled()
     expect(logService.log).toHaveBeenCalledWith(
       'INFO',
-      expect.any(String),
+      expect.stringMatching(/.*/),
       expect.objectContaining({
         requestBody: expect.objectContaining({
           username: 'test',
