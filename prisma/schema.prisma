@@ -44,3 +44,21 @@ model Task {
 
   @@map("tasks")
 }
+
+model Log {
+  id          String   @id @default(uuid())
+  level       String
+  message     String
+  metadata    Json?
+  ip          String?
+  userAgent   String?  @map("user_agent")
+  requestId   String?  @map("request_id")
+  duration    Int?
+  statusCode  Int?     @map("status_code")
+  method      String?
+  url         String?
+  requestBody Json?    @map("request_body")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("logs")
+}

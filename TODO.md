@@ -21,7 +21,7 @@
 
 #### CRUD de Tarefas
 
-* [ ] Model de Tarefa (id, título, descrição, prioridade, status, timestamps)
+* [X] Model de Tarefa (id, título, descrição, prioridade, status, timestamps)
 * [ ] Endpoints: `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
 * [ ] Auditoria mínima: criar/atualizar usuário + timestamp
 
@@ -33,7 +33,7 @@
 
 #### Extras Backend
 
-* [ ] Logs de requisições e erros
+* [X] Logs de requisições e erros
 * [ ] Healthcheck `/health`
 * [ ] Paginação em listagem de tarefas
 * [ ] Índices no banco para otimizar busca

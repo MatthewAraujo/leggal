@@ -1,5 +1,4 @@
 import { WrongCredentialsError } from '@/domain/todo/application/use-cases/errors/wrong-credentials-error'
-import { AuthenticateUserUseCase } from '@/domain/todo/application/use-cases/user/auth/authenticate-student'
 import { Public } from '@/infra/auth/public'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
@@ -14,6 +13,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger'
 import { z } from 'zod'
 import { AuthenticateDto, AuthenticateResponseDto } from '@/infra/http/dtos/authenticate.dto'
+import { AuthenticateUserUseCase } from '@/domain/todo/application/use-cases/user/auth/authenticate-user'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
