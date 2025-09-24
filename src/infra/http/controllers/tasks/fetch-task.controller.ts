@@ -37,7 +37,8 @@ export class FetchTasksController {
     const userId = user.sub
 
     const result = await this.fetchTasks.execute({
-      authorId: userId
+      authorId: userId,
+      page
     })
 
     if (result.isLeft()) {

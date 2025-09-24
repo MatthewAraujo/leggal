@@ -3,6 +3,7 @@ import { Task } from '@/domain/todo/enterprise/entities/task'
 import { TasksRepository } from '@/domain/todo/application/repositories/task-repository'
 import { PrismaService } from '../prisma.service'
 import { PrismaTaskMapper } from '../mappers/prisma-task-mapper'
+import { PaginationParams } from '@/core/repositories/pagination-params'
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
@@ -15,13 +16,15 @@ export class PrismaTasksRepository implements TasksRepository {
     return PrismaTaskMapper.toDomain(task)
   }
 
-  async findAllByAuthorId(authorId: string): Promise<Task[]> {
-    const tasks = await this.prisma.task.findMany({ where: { authorId } })
+  async findAllByAuthorId(authorId: string, { page }: PaginationParams): Promise<Task[]> {
+    const tasks = await this.prisma.task.findMany(
+      {
+        where: { authorId },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+        skip: (page - 1) * 20
+      })
     return tasks.map(PrismaTaskMapper.toDomain)
-  }
-
-  async findByAuthorId(authorId: string): Promise<Task[]> {
-    return this.findAllByAuthorId(authorId)
   }
 
   async create(task: Task): Promise<void> {
