@@ -26,7 +26,7 @@ type GenerateTaskBodySchema = z.infer<typeof generateTaskBodySchema>
 export class GenerateTaskController {
   constructor(private generateTask: GenerateTaskUseCase) { }
 
-  @Post()
+  @Post('generate')
   @HttpCode(201)
   @ApiOperation({ summary: 'Gerar tarefa via IA a partir de texto' })
   @ApiBody({ type: GenerateTaskDto })

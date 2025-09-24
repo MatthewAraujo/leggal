@@ -9,6 +9,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nes
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { Task } from '@/domain/todo/enterprise/entities/task'
+import { TaskPresenter } from '@/infra/http/presenters/task-presenter'
 import { SemanticSearchDto } from '../../dtos/task/semantic-search.dto'
 import { SemanticSearchEmbeddingUseCase } from '@/domain/todo/application/use-cases/task/ia/semantic-search'
 
@@ -44,7 +45,7 @@ export class SemanticSearchController {
 
     const tasks: Task[] = result.value.tasks
 
-    return { tasks }
+    return { tasks: tasks.map(TaskPresenter.toHTTP) }
   }
 }
 
