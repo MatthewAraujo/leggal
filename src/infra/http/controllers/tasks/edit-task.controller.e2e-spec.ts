@@ -28,7 +28,7 @@ describe('Edit task (E2E)', () => {
     await app.init()
   })
 
-  test('[PUT] /tasks/:id - successfully edits task', async () => {
+  test('[PATCH] /tasks/:id - successfully edits task', async () => {
     const user = await userFactory.makePrismaUser()
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
@@ -43,7 +43,7 @@ describe('Edit task (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/tasks/${task.id}`)
+      .patch(`/tasks/${task.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         title: 'Updated Task',
@@ -62,7 +62,7 @@ describe('Edit task (E2E)', () => {
     expect(updatedTask?.status).toBe('IN_PROGRESS')
   })
 
-  test('[PUT] /tasks/:id - cannot edit task of another user', async () => {
+  test('[PATCH] /tasks/:id - cannot edit task of another user', async () => {
     const user1 = await userFactory.makePrismaUser()
     const user2 = await userFactory.makePrismaUser()
     const accessToken = jwt.sign({ sub: user1.id.toString() })
@@ -78,7 +78,7 @@ describe('Edit task (E2E)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/tasks/${task.id}`)
+      .patch(`/tasks/${task.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         title: 'Updated Title',
@@ -90,12 +90,12 @@ describe('Edit task (E2E)', () => {
     expect(response.statusCode).toBe(401)
   })
 
-  test('[PUT] /tasks/:id - task not found', async () => {
+  test('[PATCH] /tasks/:id - task not found', async () => {
     const user = await userFactory.makePrismaUser()
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .put('/tasks/non-existing-id')
+      .patch('/tasks/non-existing-id')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         title: 'Updated Title',
@@ -104,7 +104,7 @@ describe('Edit task (E2E)', () => {
         status: 'COMPLETED',
       })
 
-    expect(response.statusCode).toBe(404)
+    expect(response.statusCode).toBe(409)
   })
 })
 

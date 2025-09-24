@@ -4,7 +4,6 @@ import { AuthModule } from './auth/auth.module'
 import { envSchema } from './env/env'
 import { EnvModule } from './env/env.module'
 import { HttpModule } from './http/http.module'
-import { LogModule } from './services/log/log.module'
 import { LoggerMiddleware } from './middleware/logger.middleware'
 import { ServicesModule } from './services/services.module'
 

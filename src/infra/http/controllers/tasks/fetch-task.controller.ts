@@ -8,7 +8,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiTags, ApiOperation, ApiQuery, ApiResponse, ApiBearerAuth } from '@nestjs/swagger'
 import { TaskPresenter } from '../../presenters/task-presenter'
 import { FetchTasksUseCase } from '@/domain/todo/application/use-cases/task/get/get-tasks'
 
@@ -24,11 +24,16 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 
 @ApiTags('tasks')
+@ApiBearerAuth()
 @Controller('/tasks')
 export class FetchTasksController {
   constructor(private fetchTasks: FetchTasksUseCase) { }
 
   @Get()
+  @ApiOperation({ summary: 'Listar tarefas do usuário autenticado (paginado)' })
+  @ApiQuery({ name: 'page', required: false, description: 'Página (>= 1)', example: 1 })
+  @ApiResponse({ status: 200, description: 'Lista de tarefas retornada com sucesso' })
+  @ApiResponse({ status: 400, description: 'Parâmetros inválidos' })
   async handle(
     @Query('page', queryValidationPipe) page: PageQueryParamSchema,
     @CurrentUser() user: UserPayload,
@@ -45,8 +50,8 @@ export class FetchTasksController {
       throw new BadRequestException()
     }
 
-    const comments = result.value.tasks
+    const tasks = result.value.tasks
 
-    return { comments: comments.map(TaskPresenter.toHTTP) }
+    return { tasks: tasks.map(TaskPresenter.toHTTP) }
   }
 }

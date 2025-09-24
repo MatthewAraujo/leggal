@@ -1,6 +1,5 @@
 import { Either, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
-import { Task } from '@/domain/todo/enterprise/entities/task'
 import { OpenAiService } from '@/infra/services/openai/openai.service'
 
 interface GenerateTaskUseCaseRequest {

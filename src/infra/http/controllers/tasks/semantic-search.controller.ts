@@ -29,7 +29,7 @@ export class SemanticSearchController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Buscar tarefas semanticamente similares' })
   @ApiBody({ type: SemanticSearchDto })
-  @ApiResponse({ status: 200, description: 'Retorna as tasks similares' })
+  @ApiResponse({ status: 200, description: 'Retorna as tarefas similares' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   async handle(
     @Body(new ZodValidationPipe(semanticSearchBodySchema)) body: SemanticSearchBody
@@ -42,7 +42,6 @@ export class SemanticSearchController {
       throw new BadRequestException('Erro ao buscar tasks similares')
     }
 
-    // Retorna apenas as tasks do resultado
     const tasks: Task[] = result.value.tasks
 
     return { tasks }

@@ -33,7 +33,7 @@ export class CreateTaskController {
 
   @Post()
   @HttpCode(201)
-  @ApiOperation({ summary: 'Criar nova Tarefa' })
+  @ApiOperation({ summary: 'Criar nova tarefa' })
   @ApiBody({ type: CreateTaskDto })
   @ApiResponse({ status: 201, description: 'Tarefa criada com sucesso' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })

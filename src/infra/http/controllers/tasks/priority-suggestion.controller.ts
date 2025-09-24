@@ -26,9 +26,10 @@ export class SuggestPriorityController {
   constructor(private suggestPriorityUseCase: SuggestPriorityUseCase) { }
 
   @Post('suggest-priority')
-  @ApiOperation({ summary: 'Sugere a prioridade mais adequada para uma task' })
+  @ApiOperation({ summary: 'Sugerir prioridade adequada para uma tarefa' })
   @ApiBody({ type: SuggestPriorityDto })
-  @ApiResponse({ status: 200, description: 'Prioridade sugerida', type: SuggestPriorityResponseDto })
+  @ApiResponse({ status: 200, description: 'Prioridade sugerida com sucesso', type: SuggestPriorityResponseDto })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
   async handle(@Body(bodyValidationPipe) body: SuggestPriorityTaskBodySchema) {
     const { title, description } = body
     const priority = await this.suggestPriorityUseCase.execute({

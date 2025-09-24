@@ -28,16 +28,15 @@ export class GenerateTaskController {
 
   @Post()
   @HttpCode(201)
-  @ApiOperation({ summary: 'Criar nova Tarefa' })
+  @ApiOperation({ summary: 'Gerar tarefa via IA a partir de texto' })
   @ApiBody({ type: GenerateTaskDto })
-  @ApiResponse({ status: 201, description: 'Tarefa criada com sucesso' })
+  @ApiResponse({ status: 201, description: 'Tarefa gerada e criada com sucesso' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   async handle(
     @Body(bodyValidationPipe) body: GenerateTaskBodySchema,
     @CurrentUser() user: UserPayload
   ) {
     const { text } = body
-    const authorId = user.sub
 
     const result = await this.generateTask.execute({
       text
