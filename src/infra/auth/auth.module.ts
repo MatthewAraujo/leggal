@@ -19,7 +19,7 @@ import { EnvModule } from '../env/env.module'
 				const publicKey = env.get('JWT_PUBLIC_KEY')
 
 				return {
-					signOptions: { algorithm: 'none' },
+					signOptions: { algorithm: 'RS256' },
 					privateKey: Buffer.from(privateKey, 'base64'),
 					publicKey: Buffer.from(publicKey, 'base64'),
 				}

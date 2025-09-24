@@ -46,7 +46,7 @@ export class PrismaTasksRepository implements TasksRepository {
   async save(task: Task): Promise<void> {
     const data = PrismaTaskMapper.toPrisma(task)
 
-    this.prisma.task.update({
+    await this.prisma.task.update({
       where: {
         id: task.id.toString(),
       },
