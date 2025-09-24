@@ -19,9 +19,16 @@ import { CreateTaskUseCase } from '@/domain/todo/application/use-cases/task/crea
 import { EditTaskUseCase } from '@/domain/todo/application/use-cases/task/edit/edit-task'
 import { DeleteTaskUseCase } from '@/domain/todo/application/use-cases/task/delete/delete-task'
 import { FetchTasksUseCase } from '@/domain/todo/application/use-cases/task/get/get-tasks'
+import { GenerateTaskController } from './controllers/tasks/generate-task.controller'
+import { SuggestPriorityController } from './controllers/tasks/priority-suggestion.controller'
+import { GenerateTaskUseCase } from '@/domain/todo/application/use-cases/task/ia/generate'
+import { SuggestPriorityUseCase } from '@/domain/todo/application/use-cases/task/ia/suggest-priority'
+import { SemanticSearchController } from './controllers/tasks/semantic-search.controller'
+import { SemanticSearchEmbeddingUseCase } from '@/domain/todo/application/use-cases/task/ia/semantic-search'
+import { ServicesModule } from '../services/services.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule, CacheModule, LogModule],
+  imports: [DatabaseModule, CryptographyModule, CacheModule, ServicesModule],
   controllers: [
     CreateAccountController,
     AuthenticateController,
@@ -31,7 +38,10 @@ import { FetchTasksUseCase } from '@/domain/todo/application/use-cases/task/get/
     CreateTaskController,
     EditTaskController,
     FetchTasksController,
-    DeleteTaskController
+    DeleteTaskController,
+    GenerateTaskController,
+    SuggestPriorityController,
+    SemanticSearchController
   ],
   providers: [
     AuthenticateUserUseCase,
@@ -40,7 +50,10 @@ import { FetchTasksUseCase } from '@/domain/todo/application/use-cases/task/get/
     CreateTaskUseCase,
     EditTaskUseCase,
     FetchTasksUseCase,
-    DeleteTaskUseCase
+    DeleteTaskUseCase,
+    GenerateTaskUseCase,
+    SuggestPriorityUseCase,
+    SemanticSearchEmbeddingUseCase
   ],
 })
 export class HttpModule { }

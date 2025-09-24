@@ -6,6 +6,7 @@ import { EnvModule } from './env/env.module'
 import { HttpModule } from './http/http.module'
 import { LogModule } from './services/log/log.module'
 import { LoggerMiddleware } from './middleware/logger.middleware'
+import { ServicesModule } from './services/services.module'
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware'
     AuthModule,
     HttpModule,
     EnvModule,
-    LogModule,
+    ServicesModule
   ],
 })
 export class AppModule implements NestModule {

@@ -24,20 +24,21 @@
 * [X] Model de Tarefa (id, título, descrição, prioridade, status, timestamps)
 * [X] Use Cases: `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
 * [ ] Tasks Controller and e2e tests
-* [ ] Auditoria mínima: criar/atualizar usuário + timestamp
+* [X] Auditoria mínima: criar/atualizar usuário + timestamp
 
 #### Integração IA
 
-* [ ] Endpoint para geração automática de título e descrição
-* [ ] Endpoint para sugestão de prioridade
-* [ ] Endpoint para busca semântica (recebendo query de texto livre)
+* [X] Endpoint para geração automática de título e descrição
+* [X] Endpoint para sugestão de prioridade
+* [X] Endpoint para busca semântica (recebendo query de texto livre)
+* [] criar testes para todos os endpoint acima
 
 #### Extras Backend
 
 * [X] Logs de requisições e erros
 * [X] Healthcheck `/health`
-* [ ] Paginação em listagem de tarefas
-* [ ] Índices no banco para otimizar busca
+* [X] Paginação em listagem de tarefas
+* [X] Índices no banco para otimizar busca
 
 ---
 
@@ -47,20 +48,21 @@
 
 #### Geração de Conteúdo
 
-* [ ] Função para gerar título resumido a partir do texto livre
-* [ ] Função para gerar descrição resumida
+* [X] Função para gerar título resumido a partir do texto livre
+* [X] Função para gerar descrição resumida
 * [ ] Cache simples de prompts/respostas
 
 #### Priorização
 
-* [ ] Modelo para sugerir prioridade (urgência/impacto)
-* [ ] Retornar explicação curta da sugestão
+* [X] Modelo para sugerir prioridade (urgência/impacto)
+* [X] Retornar explicação curta da sugestão
 
 #### Busca Semântica
 
 * [ ] Criar embeddings para tarefas
-* [ ] Endpoint de busca por similaridade
-* [ ] Indexar novas tarefas automaticamente
+  -[] Adicionar na hora de criar tarefas os embeddings e o novo schema prisma com os embeddings
+* [X] Endpoint de busca por similaridade
+* [X] Indexar novas tarefas automaticamente
 
 ---
 
@@ -103,7 +105,7 @@
 
 * [ ] Docker Compose para backend + frontend + banco
 * [X] Logs de aplicação (console + arquivo)
-* [ ] Paginação / performance / índices
+* [X] Paginação / performance / índices
 * [ ] Configurar variáveis de ambiente seguras
 
 ---
