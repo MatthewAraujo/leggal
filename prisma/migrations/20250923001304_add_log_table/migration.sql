@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "public"."logs" (
+CREATE TABLE "logs" (
     "id" TEXT NOT NULL,
     "level" TEXT NOT NULL,
     "message" TEXT NOT NULL,

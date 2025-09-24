@@ -3,13 +3,15 @@ import { TasksRepository } from '@/domain/todo/application/repositories/task-rep
 import { Task } from '@/domain/todo/enterprise/entities/task'
 
 export class InMemoryTaskRepository implements TasksRepository {
-
   public items: Task[] = []
 
   findByAuthorId(authorId: string): Promise<Task[]> {
     return Promise.resolve(this.items.filter((item) => item.authorId.toString() === authorId))
   }
 
+  findAllByAuthorId(id: string): Promise<Task[] | null> {
+    throw new Error('Method not implemented.')
+  }
   delete(task: Task): Promise<void> {
     const index = this.items.findIndex((item) => item.id === task.id)
     this.items.splice(index, 1)

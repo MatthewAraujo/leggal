@@ -26,14 +26,13 @@ Content-Type: application/json
 ###
 
 # @name create_question
-POST {{baseUrl}}/questions
+POST {{baseUrl}}/tasks
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
   "title": "Nova perguntdawa",
-  "content": "Teste",
-  "attachments":[]
+  "content": "Teste" 
 }
 
 ###

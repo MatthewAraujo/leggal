@@ -1,10 +1,10 @@
-import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { Encrypter } from '../../../cryptography/encrypter'
 import { UsersRepository } from '../../../repositories/users-repository'
 import { InvalidRefreshTokenError } from '../../errors/invalid-refresh-token-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { CacheRepository } from '@/infra/cache/cache-repository'
+import { Either, left, right } from '@/core/either'
 
 interface RefreshTokenUseCaseRequest {
   refreshToken: string

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { UsersRepository } from '@/domain/todo/application/repositories/users-repository'
 import { User } from '@/domain/todo/enterprise/entities/user'
-import { PrismaUserMapper } from '../mappers/prisma-student-mapper'
+import { PrismaUserMapper } from '../mappers/prisma-user-mapper'
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -40,6 +40,17 @@ export class PrismaUsersRepository implements UsersRepository {
     const data = PrismaUserMapper.toPrisma(user)
 
     await this.prisma.user.create({
+      data,
+    })
+  }
+
+  async save(user: User): Promise<void> {
+    const data = PrismaUserMapper.toPrisma(user)
+
+    await this.prisma.user.update({
+      where: {
+        id: user.id.toString()
+      },
       data,
     })
   }

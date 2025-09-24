@@ -5,23 +5,23 @@ import { TasksRepository } from '../../../repositories/task-repository'
 import { UsersRepository } from '../../../repositories/users-repository'
 import { Task } from '@/domain/todo/enterprise/entities/task'
 
-interface GetTasksUseCaseRequest {
+interface fetchTasksUseCaseRequest {
   authorId: string
 }
 
-type GetTasksUseCaseResponse = Either<
+type fetchTasksUseCaseResponse = Either<
   { message: string },
   { tasks: Task[] }
 >
 
 @Injectable()
-export class GetTasksUseCase {
+export class FetchTasksUseCase {
   constructor(
     private tasksRepository: TasksRepository,
     private usersRepository: UsersRepository,
   ) { }
 
-  async execute({ authorId }: GetTasksUseCaseRequest): Promise<GetTasksUseCaseResponse> {
+  async execute({ authorId }: fetchTasksUseCaseRequest): Promise<fetchTasksUseCaseResponse> {
     const userId = new UniqueEntityID(authorId)
 
     const user = await this.usersRepository.findById(userId.toString())

@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { Injectable } from '@nestjs/common'
 import { TaskPriority, TaskStatus } from '@/domain/todo/enterprise/entities/task'
 import { Task } from '@/domain/todo/enterprise/entities/task'
-import { TasksRepository } from '../../../repositories/users-repository'
+import { TasksRepository } from '../../../repositories/task-repository'
 
 interface EditTaskUseCaseRequest {
   authorId: string

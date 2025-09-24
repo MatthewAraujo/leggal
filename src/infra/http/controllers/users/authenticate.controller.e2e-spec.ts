@@ -32,7 +32,7 @@ describe('Authenticate (E2E)', () => {
   })
 
   test('[POST] /sessions', async () => {
-    await userFactory.makePrismauser({
+    await userFactory.makePrismaUser({
       email: 'johndoe@example.com',
       password: await hash('123456', 8),
     })

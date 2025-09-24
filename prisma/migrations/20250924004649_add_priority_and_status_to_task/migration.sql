@@ -8,17 +8,17 @@
 
 */
 -- CreateEnum
-CREATE TYPE "public"."Priority" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
+CREATE TYPE "Priority" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
 
 -- CreateEnum
-CREATE TYPE "public"."Status" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED');
+CREATE TYPE "Status" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED');
 
 -- DropIndex
-DROP INDEX "public"."tasks_slug_key";
+DROP INDEX "tasks_slug_key";
 
 -- AlterTable
-ALTER TABLE "public"."tasks" DROP COLUMN "content",
+ALTER TABLE "tasks" DROP COLUMN "content",
 DROP COLUMN "slug",
 ADD COLUMN     "description" TEXT NOT NULL,
-ADD COLUMN     "priority" "public"."Priority" NOT NULL,
-ADD COLUMN     "status" "public"."Status" NOT NULL DEFAULT 'PENDING';
+ADD COLUMN     "priority" "Priority" NOT NULL,
+ADD COLUMN     "status" "Status" NOT NULL DEFAULT 'PENDING';

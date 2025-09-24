@@ -5,7 +5,7 @@ import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repos
 import { InMemoryCacheRepository } from 'test/repositories/in-memory-cache-repository'
 import { AuthenticateUserUseCase } from './authenticate-user'
 
-let inMemoryusersRepository: InMemoryUsersRepository
+let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryCacheRepository: InMemoryCacheRepository
 let fakeHasher: FakeHasher
 let encrypter: FakeEncrypter
@@ -14,12 +14,12 @@ let sut: AuthenticateUserUseCase
 
 describe('Authenticate user', () => {
 	beforeEach(() => {
-		inMemoryusersRepository = new InMemoryUsersRepository()
+		inMemoryUsersRepository = new InMemoryUsersRepository()
 		inMemoryCacheRepository = new InMemoryCacheRepository()
 		fakeHasher = new FakeHasher()
 		encrypter = new FakeEncrypter()
 
-		sut = new AuthenticateUserUseCase(inMemoryusersRepository, fakeHasher, encrypter, inMemoryCacheRepository)
+		sut = new AuthenticateUserUseCase(inMemoryUsersRepository, fakeHasher, encrypter, inMemoryCacheRepository)
 	})
 
 	it('should be able to authenticate a user', async () => {
@@ -28,7 +28,7 @@ describe('Authenticate user', () => {
 			password: await fakeHasher.hash('123456'),
 		})
 
-		inMemoryusersRepository.items.push(user)
+		inMemoryUsersRepository.items.push(user)
 
 		const result = await sut.execute({
 			email: 'johndoe@example.com',
