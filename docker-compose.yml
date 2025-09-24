@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres
+    image: pgvector/pgvector:pg17
     container_name: leggal-pg
     environment:
       POSTGRES_USER: docker

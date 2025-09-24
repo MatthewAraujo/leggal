@@ -40,4 +40,11 @@ export class InMemoryTaskRepository implements TasksRepository {
 
     DomainEvents.dispatchEventsForAggregate(task.id)
   }
+
+  async updateEmbedding(taskId: string, embedding: number[]): Promise<void> {
+    const task = await this.findById(taskId)
+    if (!task) return
+    // no-op for in-memory tests; we just ensure the method exists
+    return
+  }
 }

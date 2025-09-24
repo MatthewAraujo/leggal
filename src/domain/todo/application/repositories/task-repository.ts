@@ -7,4 +7,5 @@ export abstract class TasksRepository {
   abstract create(task: Task): Promise<void>
   abstract delete(task: Task): Promise<void>
   abstract save(task: Task): Promise<void>
+  abstract updateEmbedding(taskId: string, embedding: number[]): Promise<void>
 }

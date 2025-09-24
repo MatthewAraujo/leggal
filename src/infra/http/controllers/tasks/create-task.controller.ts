@@ -13,7 +13,6 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { TaskPriority, TaskStatus } from '@/domain/todo/enterprise/entities/task'
 import { CreateTaskDto } from '../../dtos/task/create-task.dto'
-import { Public } from '@/infra/auth/public'
 
 const createTaskBodySchema = z.object({
   title: z.string(),

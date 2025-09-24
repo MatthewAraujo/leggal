@@ -25,6 +25,8 @@ export class SuggestPriorityUseCase {
       Task title: "${title}"
       Task description: "${description}"
 
+      Type of priority
+      ['LOW','MEDIUM','HIGH']
       Example response format:
       {
         "priority": "HIGH"

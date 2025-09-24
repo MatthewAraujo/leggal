@@ -2,14 +2,25 @@ import { InMemoryTaskRepository } from 'test/repositories/in-memory-task-reposit
 import { CreateTaskUseCase } from './create-task'
 import { TaskPriority, TaskStatus } from '@/domain/todo/enterprise/entities/task'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { vi } from 'vitest'
 
 let inMemoryTaskRepository: InMemoryTaskRepository
 let sut: CreateTaskUseCase
+let openAiServiceMock: { createEmbedding: (text: string) => Promise<number[]> }
 
 describe('Create task', () => {
   beforeEach(() => {
     inMemoryTaskRepository = new InMemoryTaskRepository()
-    sut = new CreateTaskUseCase(inMemoryTaskRepository)
+      ; (inMemoryTaskRepository as any).updateEmbedding = vi.fn().mockResolvedValue(undefined)
+
+    openAiServiceMock = {
+      createEmbedding: vi.fn().mockResolvedValue([0.1, 0.2, 0.3]),
+    }
+
+    sut = new CreateTaskUseCase(
+      inMemoryTaskRepository as any,
+      openAiServiceMock as any,
+    )
   })
 
   it('should be able to create a task', async () => {
@@ -31,6 +42,14 @@ describe('Create task', () => {
     expect(inMemoryTaskRepository.items[0].priority).toBe(TaskPriority.MEDIUM)
     expect(inMemoryTaskRepository.items[0].status).toBe(TaskStatus.PENDING)
     expect(inMemoryTaskRepository.items[0].authorId.toString()).toBe(authorId)
+    // embedding creation + repository update called
+    expect(openAiServiceMock.createEmbedding).toHaveBeenCalledTimes(1)
+    const updateEmbeddingMock = (inMemoryTaskRepository as any).updateEmbedding
+    expect(updateEmbeddingMock).toHaveBeenCalledTimes(1)
+    expect(updateEmbeddingMock).toHaveBeenCalledWith(
+      inMemoryTaskRepository.items[0].id.toString(),
+      [0.1, 0.2, 0.3],
+    )
   })
 
   it('should be able to create a task with default values', async () => {

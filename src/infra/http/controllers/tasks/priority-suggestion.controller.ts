@@ -32,10 +32,16 @@ export class SuggestPriorityController {
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   async handle(@Body(bodyValidationPipe) body: SuggestPriorityTaskBodySchema) {
     const { title, description } = body
-    const priority = await this.suggestPriorityUseCase.execute({
+    const result = await this.suggestPriorityUseCase.execute({
       title,
       description,
     })
+
+    if (result.isLeft()) {
+      throw new BadRequestException()
+    }
+
+    const { priority } = result.value
 
     return { priority }
   }

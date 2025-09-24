@@ -9,7 +9,7 @@ export class TaskPresenter {
       description: task.description,
       priority: task.priority,
       status: task.status,
-      authorId: task.authorId,
+      authorId: task.authorId.toString(),
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,
     }

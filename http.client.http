@@ -1,0 +1,32 @@
+### Base URL
+@baseUrl = http://localhost:3333
+@contentType = application/json
+
+### 1) Autenticar para obter o JWT
+# Substitua o e-mail/senha pelo usuário existente no seu banco
+POST {{baseUrl}}/sessions
+Content-Type: {{contentType}}
+
+{
+  "email": "joao@example.com",
+  "password": "password123"
+}
+
+### Copie o token JWT do response acima e cole abaixo em Authorization
+@jwt = eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwZTNhMjQ4OC1kOGQ0LTQ2OTUtYTA5Ni01M2Y4ZWQ0NTE0ZWUiLCJpYXQiOjE3NTg3Mzk5MTl9.fyMGmKAcMIKdZMr2GSQ7KzMxclf7gqiwLwDilU-LrbbZPIkaA8vFn_kHboFdTXDgBVebeuSgEVmbZGRxKq392xCnkPGI9rRLogQfOxPMprDCM-iCMabnTI6feQSsAnAchS9Orrsg9lPQG1RM6vN-3ZGwPye4GZHYRpyhLiW0tOiGqcaEE7Iw-EufpFxSX3YzsH39y_uTv1fhOl8eNsqG8rQKvJdWqHBvCGNNiEe5vSRs0Peb1cPGhRAA8R8Ca22OTZwFJ1V5YB0KHMkY79k0Xe_q4GLPT3Dp2Ym75C4lBUe2urWOrBDSUBhBrraUQZDDRx5HvQlkcHVUOu0URyJqSA
+
+### 2) Criar uma task
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+Authorization: Bearer {{jwt}}
+
+{
+  "title": "Estudar NestJS",
+  "description": "Ler docs e criar um projeto exemplo",
+  "priority": "MEDIUM",
+  "status": "PENDING"
+}
+
+### 3) Listar tasks (verificar criação)
+GET {{baseUrl}}/tasks?page=1
+Authorization: Bearer {{jwt}}

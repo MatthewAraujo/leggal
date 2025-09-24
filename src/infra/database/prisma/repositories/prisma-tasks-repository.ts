@@ -54,5 +54,11 @@ export class PrismaTasksRepository implements TasksRepository {
     })
   }
 
+  async updateEmbedding(taskId: string, embedding: number[]): Promise<void> {
+    const vectorLiteral = `[${embedding.join(',')}]`
+    await this.prisma.$executeRaw`
+      UPDATE "tasks" SET embedding = ${vectorLiteral}::vector WHERE id = ${taskId}
+    `
+  }
 }
 
