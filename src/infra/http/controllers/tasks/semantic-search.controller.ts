@@ -21,7 +21,7 @@ const semanticSearchBodySchema = z.object({
 type SemanticSearchBody = z.infer<typeof semanticSearchBodySchema>
 
 @ApiTags('tasks')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('/tasks/semantic-search')
 export class SemanticSearchController {
   constructor(private semanticSearchUseCase: SemanticSearchEmbeddingUseCase) { }

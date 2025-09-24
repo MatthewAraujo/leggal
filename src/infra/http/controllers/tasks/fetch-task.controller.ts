@@ -24,7 +24,7 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 
 @ApiTags('tasks')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('/tasks')
 export class FetchTasksController {
   constructor(private fetchTasks: FetchTasksUseCase) { }

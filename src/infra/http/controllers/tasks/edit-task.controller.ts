@@ -31,7 +31,7 @@ const bodyValidationPipe = new ZodValidationPipe(editTaskBodySchema)
 type EditTaskBodySchema = z.infer<typeof editTaskBodySchema>
 
 @ApiTags('tasks')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('/tasks/:id')
 export class EditTaskController {
   constructor(private editTask: EditTaskUseCase) { }

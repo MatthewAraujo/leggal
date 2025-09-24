@@ -1,4 +1,5 @@
 
+import { Slug } from '@/domain/todo/enterprise/entities/value-objects/slug'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
@@ -38,6 +39,7 @@ describe('Edit task (E2E)', () => {
         description: 'Original description',
         priority: 'MEDIUM',
         status: 'PENDING',
+        slug: Slug.create('Original Task').value,
         authorId: user.id.toString(),
       },
     })
@@ -73,6 +75,7 @@ describe('Edit task (E2E)', () => {
         description: 'Task description',
         priority: 'MEDIUM',
         status: 'PENDING',
+        slug: Slug.create('Original Task').value,
         authorId: user2.id.toString(),
       },
     })

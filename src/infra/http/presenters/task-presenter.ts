@@ -1,5 +1,4 @@
 import { Task } from "@/domain/todo/enterprise/entities/task";
-import { Priority } from "@prisma/client";
 
 export class TaskPresenter {
   static toHTTP(task: Task) {
@@ -9,6 +8,7 @@ export class TaskPresenter {
       description: task.description,
       priority: task.priority,
       status: task.status,
+      slug: task.slug.value,
       authorId: task.authorId.toString(),
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,

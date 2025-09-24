@@ -1,64 +1,71 @@
 import { SemanticSearchEmbeddingUseCase } from './semantic-search'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { TaskPriority } from '@/domain/todo/enterprise/entities/task'
+import { TaskPriority, TaskStatus, Task } from '@/domain/todo/enterprise/entities/task'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { vi } from 'vitest'
+import { InMemoryTaskRepository } from 'test/repositories/in-memory-task-repository'
+import { Slug } from '@/domain/todo/enterprise/entities/value-objects/slug'
 
 class OpenAiServiceMock {
   createEmbedding = vi.fn()
 }
 
-class PrismaServiceMock {
-  $queryRaw = vi.fn()
-}
+let inMemoryTaskRepository: InMemoryTaskRepository
+let openai: OpenAiServiceMock
+let sut: SemanticSearchEmbeddingUseCase
 
 describe('SemanticSearchEmbeddingUseCase', () => {
-  let prisma: PrismaServiceMock
-  let openai: OpenAiServiceMock
-  let sut: SemanticSearchEmbeddingUseCase
-
   beforeEach(() => {
-    prisma = new PrismaServiceMock()
+    inMemoryTaskRepository = new InMemoryTaskRepository()
     openai = new OpenAiServiceMock()
-    sut = new SemanticSearchEmbeddingUseCase(prisma as unknown as PrismaService, openai as any)
+    sut = new SemanticSearchEmbeddingUseCase(
+      inMemoryTaskRepository,
+      openai as any,
+    )
   })
 
-  it('should return mapped tasks from database rows ordered by similarity', async () => {
-    (openai.createEmbedding as any).mockResolvedValueOnce([0.1, 0.2, 0.3])
+  it('should return tasks ordered by similarity', async () => {
+    // Mock embedding
+    openai.createEmbedding.mockResolvedValueOnce([0.1, 0.2, 0.3])
 
-    const rows = [
+    // cria tasks no repositório de memória
+    const t1 = Task.create(
       {
-        id: 't1',
         title: 'Task 1',
-        slug: 'task-1',
         description: 'Desc 1',
+        slug: Slug.createFromText('task-1'),
         priority: TaskPriority.MEDIUM,
-        status: 'PENDING',
-        authorId: new UniqueEntityID().toString(),
+        status: TaskStatus.PENDING,
+        authorId: new UniqueEntityID(),
       },
-      {
-        id: 't2',
-        title: 'Task 2',
-        slug: 'task-2',
-        description: 'Desc 2',
-        priority: TaskPriority.HIGH,
-        status: 'COMPLETED',
-        authorId: new UniqueEntityID().toString(),
-      },
-    ]
+      new UniqueEntityID('t1'),
+    )
 
-      ; (prisma.$queryRaw as any).mockResolvedValueOnce(rows)
+    const t2 = Task.create(
+      {
+        title: 'Task 2',
+        description: 'Desc 2',
+        slug: Slug.createFromText('task-2'),
+        priority: TaskPriority.HIGH,
+        status: TaskStatus.COMPLETED,
+        authorId: new UniqueEntityID(),
+      },
+      new UniqueEntityID('t2'),
+    )
+
+    inMemoryTaskRepository.items.push(t1, t2)
 
     const result = await sut.execute({ title: 'foo', description: 'bar' })
 
     expect(result.isRight()).toBe(true)
-    if (result.isLeft()) throw new Error('Expected right')
-    const tasks = (result.value as { tasks: any[] }).tasks
+
+    const tasks = result.value?.tasks
     expect(Array.isArray(tasks)).toBe(true)
     expect(tasks).toHaveLength(2)
-    expect(tasks[0].title).toBe('Task 1')
-    expect(tasks[0].slug.value).toBe('task-1')
-    expect(tasks[1].priority).toBe(TaskPriority.HIGH)
+    expect(tasks?.[0].title).toBe('Task 1')
+    expect(tasks?.[0].slug.value).toBe('task-1')
+    expect(tasks?.[1].priority).toBe(TaskPriority.HIGH)
+
+    expect(openai.createEmbedding).toHaveBeenCalledTimes(1)
   })
 })
-
 

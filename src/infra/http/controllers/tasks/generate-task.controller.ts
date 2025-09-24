@@ -12,6 +12,7 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { GenerateTaskDto } from '../../dtos/task/generate-task.dto'
 import { GenerateTaskUseCase } from '@/domain/todo/application/use-cases/task/ia/generate'
+import { TaskPresenter } from '../../presenters/task-presenter'
 
 const generateTaskBodySchema = z.object({
   text: z.string(),
@@ -21,7 +22,7 @@ const bodyValidationPipe = new ZodValidationPipe(generateTaskBodySchema)
 type GenerateTaskBodySchema = z.infer<typeof generateTaskBodySchema>
 
 @ApiTags('tasks')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('/tasks')
 export class GenerateTaskController {
   constructor(private generateTask: GenerateTaskUseCase) { }
@@ -37,13 +38,21 @@ export class GenerateTaskController {
     @CurrentUser() user: UserPayload
   ) {
     const { text } = body
+    const authorId = user.sub
 
     const result = await this.generateTask.execute({
-      text
+      text,
+      authorId
+
     })
 
     if (result.isLeft()) {
       throw new BadRequestException()
     }
+
+
+    const task = result.value.task
+
+    return { tasks: TaskPresenter.toHTTP(task) }
   }
 }

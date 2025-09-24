@@ -16,7 +16,7 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 
 @ApiTags('tasks')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('/tasks/:id')
 export class DeleteTaskController {
   constructor(private deleteTask: DeleteTaskUseCase) { }

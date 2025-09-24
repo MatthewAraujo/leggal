@@ -25,7 +25,7 @@ const bodyValidationPipe = new ZodValidationPipe(createTaskBodySchema)
 type CreateTaskBodySchema = z.infer<typeof createTaskBodySchema>
 
 @ApiTags('tasks')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('/tasks')
 export class CreateTaskController {
   constructor(private registerTask: CreateTaskUseCase) { }

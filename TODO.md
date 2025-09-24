@@ -62,8 +62,8 @@
 
 #### Busca Semântica
 
-* [ ] Criar embeddings para tarefas
-  -[] Adicionar na hora de criar tarefas os embeddings e o novo schema prisma com os embeddings
+* [X] Criar embeddings para tarefas
+  -[X] Adicionar na hora de criar tarefas os embeddings e o novo schema prisma com os embeddings
 * [X] Endpoint de busca por similaridade
 * [X] Indexar novas tarefas automaticamente
 
@@ -90,9 +90,9 @@
 
 ### **5️⃣ Integração / Webhook**
 
-* [ ] Criar endpoint webhook que simula entrada de mensagens (tipo WhatsApp)
-* [ ] Transformar mensagem em tarefa usando IA (gerar título/descrição/prioridade)
-* [ ] Persistir tarefa no banco
+* [X] Criar endpoint webhook que simula entrada de mensagens (tipo WhatsApp)
+* [X] Transformar mensagem em tarefa usando IA (gerar título/descrição/prioridade)
+* [X] Persistir tarefa no banco
 
 ---
 

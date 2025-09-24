@@ -20,7 +20,7 @@ const bodyValidationPipe = new ZodValidationPipe(suggestpriorityTaskBodySchema)
 type SuggestPriorityTaskBodySchema = z.infer<typeof suggestpriorityTaskBodySchema>
 
 @ApiTags('tasks')
-@ApiBearerAuth()
+@ApiBearerAuth('JWT-auth')
 @Controller('/tasks')
 export class SuggestPriorityController {
   constructor(private suggestPriorityUseCase: SuggestPriorityUseCase) { }

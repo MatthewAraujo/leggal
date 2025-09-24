@@ -8,4 +8,6 @@ export abstract class TasksRepository {
   abstract delete(task: Task): Promise<void>
   abstract save(task: Task): Promise<void>
   abstract updateEmbedding(taskId: string, embedding: number[]): Promise<void>
+  abstract findSimilarTasks(embedding: number[]): Promise<Task[]>
+
 }

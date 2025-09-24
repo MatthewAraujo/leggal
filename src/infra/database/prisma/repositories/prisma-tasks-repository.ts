@@ -4,10 +4,16 @@ import { TasksRepository } from '@/domain/todo/application/repositories/task-rep
 import { PrismaService } from '../prisma.service'
 import { PrismaTaskMapper } from '../mappers/prisma-task-mapper'
 import { PaginationParams } from '@/core/repositories/pagination-params'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Slug } from '@/domain/todo/enterprise/entities/value-objects/slug'
+import { Prisma } from '@prisma/client'
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
   constructor(private prisma: PrismaService) { }
+
+
+
 
   async findById(id: string): Promise<Task | null> {
     const task = await this.prisma.task.findUnique({ where: { id } })
@@ -60,5 +66,52 @@ export class PrismaTasksRepository implements TasksRepository {
       UPDATE "tasks" SET embedding = ${vectorLiteral}::vector WHERE id = ${taskId}
     `
   }
+
+
+
+  async findSimilarTasks(embedding: number[]): Promise<Task[]> {
+    const embeddingValues = embedding.map((value) => Prisma.sql`${value}`)
+    const embeddingVector = Prisma.sql`ARRAY[${Prisma.join(embeddingValues)}]::vector`
+
+    const similarTasksRaw = await this.prisma.$queryRaw<
+      {
+        id: string
+        title: string
+        description: string
+        priority: string
+        status: string
+        slug: string
+        authorId: string
+      }[]
+    >(Prisma.sql`
+    SELECT
+      id,
+      title,
+      description,
+      priority,
+      status,
+      slug,
+      author_id AS "authorId"
+    FROM tasks
+    WHERE embedding IS NOT NULL
+    ORDER BY embedding <-> ${embeddingVector} ASC
+    LIMIT 5
+  `)
+
+    return similarTasksRaw.map((t) =>
+      Task.create(
+        {
+          title: t.title,
+          description: t.description,
+          slug: Slug.createFromText(t.slug),
+          priority: t.priority as any,
+          status: t.status as any,
+          authorId: new UniqueEntityID(t.authorId),
+        },
+        new UniqueEntityID(t.id),
+      ),
+    )
+  }
+
 }
 

@@ -3,6 +3,9 @@ import { TasksRepository } from '@/domain/todo/application/repositories/task-rep
 import { Task } from '@/domain/todo/enterprise/entities/task'
 
 export class InMemoryTaskRepository implements TasksRepository {
+  findSimilarTasks(embedding: number[]): Promise<Task[]> {
+    throw new Error('Method not implemented.')
+  }
   public items: Task[] = []
 
   findByAuthorId(authorId: string): Promise<Task[]> {

@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common'
 import { TasksRepository } from '../../../repositories/task-repository'
 import { OpenAiService } from '@/infra/services/openai/openai.service'
 import { Task, TaskPriority, TaskStatus } from '@/domain/todo/enterprise/entities/task'
+import { Slug } from '@/domain/todo/enterprise/entities/value-objects/slug'
 
 interface CreateTaskUseCaseRequest {
   authorId: string
