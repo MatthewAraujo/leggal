@@ -1,5 +1,8 @@
 
+
 ## **To-Do: Desafio Técnico Fullstack + IA**
+### unitários
+ [] - resolver bug de nao autorizado
 
 ### **1️⃣ Setup Inicial**
 
