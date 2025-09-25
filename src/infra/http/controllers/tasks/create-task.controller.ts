@@ -5,6 +5,7 @@ import {
   Controller,
   HttpCode,
   Post,
+  ConflictException,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger'
 import { z } from 'zod'
@@ -13,6 +14,7 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { TaskPriority, TaskStatus } from '@/domain/todo/enterprise/entities/task'
 import { CreateTaskDto } from '../../dtos/task/create-task.dto'
+import { TaskWithSameTitleError } from '@/domain/todo/application/use-cases/errors/task-with-same-title-error'
 
 const createTaskBodySchema = z.object({
   title: z.string(),
@@ -52,7 +54,14 @@ export class CreateTaskController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case TaskWithSameTitleError:
+          throw new ConflictException(error.message)
+        default:
+          throw new BadRequestException()
+      }
     }
   }
 }

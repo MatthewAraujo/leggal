@@ -3,6 +3,8 @@ import { EnvModule } from '../env/env.module'
 import { CacheRepository } from './cache-repository'
 import { RedisCacheRepository } from './redis/redis-cache-repository'
 import { RedisService } from './redis/redis.service'
+import { AICacheService } from './ai-cache.service'
+
 @Module({
 	imports: [EnvModule],
 	providers: [
@@ -11,7 +13,8 @@ import { RedisService } from './redis/redis.service'
 			provide: CacheRepository,
 			useClass: RedisCacheRepository,
 		},
+		AICacheService,
 	],
-	exports: [CacheRepository],
+	exports: [CacheRepository, AICacheService],
 })
-export class CacheModule {}
+export class CacheModule { }

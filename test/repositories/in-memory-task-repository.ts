@@ -50,4 +50,10 @@ export class InMemoryTaskRepository implements TasksRepository {
     // no-op for in-memory tests; we just ensure the method exists
     return
   }
+
+  async findByTitle(title: string): Promise<Task | null> {
+    const task = this.items.find((item) => item.title === title)
+    if (!task) return null
+    return task
+  }
 }

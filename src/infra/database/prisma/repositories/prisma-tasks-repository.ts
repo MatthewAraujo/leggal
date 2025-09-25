@@ -12,8 +12,12 @@ import { Prisma } from '@prisma/client'
 export class PrismaTasksRepository implements TasksRepository {
   constructor(private prisma: PrismaService) { }
 
+  async findByTitle(title: string): Promise<Task | null> {
+    const task = await this.prisma.task.findFirst({ where: { title } })
+    if (!task) return null
 
-
+    return PrismaTaskMapper.toDomain(task)
+  }
 
   async findById(id: string): Promise<Task | null> {
     const task = await this.prisma.task.findUnique({ where: { id } })

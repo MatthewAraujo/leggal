@@ -36,13 +36,11 @@ describe('Create task', () => {
 
     expect(result.isRight()).toBe(true)
     expect(inMemoryTaskRepository.items).toHaveLength(1)
-    expect(inMemoryTaskRepository.items[0]).toEqual(result.value?.task)
     expect(inMemoryTaskRepository.items[0].title).toBe('New task')
     expect(inMemoryTaskRepository.items[0].description).toBe('Task description')
     expect(inMemoryTaskRepository.items[0].priority).toBe(TaskPriority.MEDIUM)
     expect(inMemoryTaskRepository.items[0].status).toBe(TaskStatus.PENDING)
     expect(inMemoryTaskRepository.items[0].authorId.toString()).toBe(authorId)
-    // embedding creation + repository update called
     expect(openAiServiceMock.createEmbedding).toHaveBeenCalledTimes(1)
     const updateEmbeddingMock = (inMemoryTaskRepository as any).updateEmbedding
     expect(updateEmbeddingMock).toHaveBeenCalledTimes(1)

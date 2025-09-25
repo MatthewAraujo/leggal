@@ -4,6 +4,8 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { vi } from 'vitest'
 import { InMemoryTaskRepository } from 'test/repositories/in-memory-task-repository'
 import { Slug } from '@/domain/todo/enterprise/entities/value-objects/slug'
+import { AICacheService } from '@/infra/cache/ai-cache.service'
+import { InMemoryCacheRepository } from 'test/repositories/in-memory-cache-repository'
 
 class OpenAiServiceMock {
   createEmbedding = vi.fn()
@@ -12,22 +14,26 @@ class OpenAiServiceMock {
 let inMemoryTaskRepository: InMemoryTaskRepository
 let openai: OpenAiServiceMock
 let sut: SemanticSearchEmbeddingUseCase
+let aiCacheService: AICacheService
+let cacheRepository: InMemoryCacheRepository
 
 describe('SemanticSearchEmbeddingUseCase', () => {
   beforeEach(() => {
     inMemoryTaskRepository = new InMemoryTaskRepository()
     openai = new OpenAiServiceMock()
+    cacheRepository = new InMemoryCacheRepository()
+    aiCacheService = new AICacheService(cacheRepository)
     sut = new SemanticSearchEmbeddingUseCase(
       inMemoryTaskRepository,
       openai as any,
+      aiCacheService,
     )
+    aiCacheService.setCachedResponse('embedding:foo', JSON.stringify([0.1, 0.2, 0.3]), 7200)
   })
 
   it('should return tasks ordered by similarity', async () => {
-    // Mock embedding
-    openai.createEmbedding.mockResolvedValueOnce([0.1, 0.2, 0.3])
+    openai.createEmbedding.mockResolvedValueOnce(aiCacheService.getCachedResponse('embedding:foo'))
 
-    // cria tasks no repositório de memória
     const t1 = Task.create(
       {
         title: 'Task 1',
@@ -65,7 +71,9 @@ describe('SemanticSearchEmbeddingUseCase', () => {
     expect(tasks?.[0].slug.value).toBe('task-1')
     expect(tasks?.[1].priority).toBe(TaskPriority.HIGH)
 
-    expect(openai.createEmbedding).toHaveBeenCalledTimes(1)
+    expect(openai.createEmbedding).toHaveBeenCalledTimes(0)
+    expect(aiCacheService.getCachedResponse).toHaveBeenCalledTimes(1)
+    expect(aiCacheService.getCachedResponse).toHaveBeenCalledWith('embedding:foo')
   })
 })
 

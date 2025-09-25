@@ -26,7 +26,7 @@
 
 * [X] Model de Tarefa (id, título, descrição, prioridade, status, timestamps)
 * [X] Use Cases: `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
-* [ ] Tasks Controller and e2e tests
+* [X] Tasks Controller and e2e tests
 * [X] Auditoria mínima: criar/atualizar usuário + timestamp
 
 #### Integração IA
@@ -34,7 +34,7 @@
 * [X] Endpoint para geração automática de título e descrição
 * [X] Endpoint para sugestão de prioridade
 * [X] Endpoint para busca semântica (recebendo query de texto livre)
-* [] criar testes para todos os endpoint acima
+* [X] criar testes para todos os endpoint acima
 
 #### Extras Backend
 
@@ -99,7 +99,7 @@
 ### **6️⃣ Testes**
 
 * [X] Testes unitários para funções do backend
-* [ ] Testes de integração da API (CRUD + IA)
+* [X] Testes de integração da API (CRUD + IA)
 * [ ] Testes de UI (cypress / react-testing-library)
 
 ---

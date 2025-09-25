@@ -5,6 +5,7 @@ import {
   Controller,
   HttpCode,
   Post,
+  InternalServerErrorException,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger'
 import { z } from 'zod'
@@ -13,6 +14,8 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { GenerateTaskDto } from '../../dtos/task/generate-task.dto'
 import { GenerateTaskUseCase } from '@/domain/todo/application/use-cases/task/ia/generate'
 import { TaskPresenter } from '../../presenters/task-presenter'
+import { OpenAiNoResponseError } from '@/domain/todo/application/use-cases/errors/openai-no-response-error'
+import { InvalidOpenAiResponseError } from '@/domain/todo/application/use-cases/errors/invalid-openai-response-error'
 
 const generateTaskBodySchema = z.object({
   text: z.string(),
@@ -33,6 +36,7 @@ export class GenerateTaskController {
   @ApiBody({ type: GenerateTaskDto })
   @ApiResponse({ status: 201, description: 'Tarefa gerada e criada com sucesso' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 500, description: 'Erro interno do servidor - OpenAI indisponível' })
   async handle(
     @Body(bodyValidationPipe) body: GenerateTaskBodySchema,
     @CurrentUser() user: UserPayload
@@ -47,7 +51,16 @@ export class GenerateTaskController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case OpenAiNoResponseError:
+          throw new InternalServerErrorException('OpenAI service is currently unavailable')
+        case InvalidOpenAiResponseError:
+          throw new InternalServerErrorException('Invalid response from OpenAI service')
+        default:
+          throw new BadRequestException()
+      }
     }
 
 
