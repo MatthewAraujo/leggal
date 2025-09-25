@@ -1,4 +1,4 @@
-import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AuthModule } from './auth/auth.module'
 import { envSchema } from './env/env'
@@ -8,21 +8,19 @@ import { LoggerMiddleware } from './middleware/logger.middleware'
 import { ServicesModule } from './services/services.module'
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      validate: (env) => envSchema.parse(env),
-      isGlobal: true,
-    }),
-    AuthModule,
-    HttpModule,
-    EnvModule,
-    ServicesModule
-  ],
+	imports: [
+		ConfigModule.forRoot({
+			validate: (env) => envSchema.parse(env),
+			isGlobal: true,
+		}),
+		AuthModule,
+		HttpModule,
+		EnvModule,
+		ServicesModule,
+	],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('*')
-  }
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(LoggerMiddleware).forRoutes('*')
+	}
 }

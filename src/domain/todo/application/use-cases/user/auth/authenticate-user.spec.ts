@@ -1,8 +1,8 @@
 import { FakeEncrypter } from 'test/cryptography/fake-encrypter'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 import { makeUser } from 'test/factories/make-user'
-import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 import { InMemoryCacheRepository } from 'test/repositories/in-memory-cache-repository'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 import { AuthenticateUserUseCase } from './authenticate-user'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
@@ -19,7 +19,12 @@ describe('Authenticate user', () => {
 		fakeHasher = new FakeHasher()
 		encrypter = new FakeEncrypter()
 
-		sut = new AuthenticateUserUseCase(inMemoryUsersRepository, fakeHasher, encrypter, inMemoryCacheRepository)
+		sut = new AuthenticateUserUseCase(
+			inMemoryUsersRepository,
+			fakeHasher,
+			encrypter,
+			inMemoryCacheRepository,
+		)
 	})
 
 	it('should be able to authenticate a user', async () => {

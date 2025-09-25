@@ -4,30 +4,30 @@ import OpenAI from 'openai'
 
 @Injectable()
 export class OpenAiService {
-  private openai: OpenAI
+	private openai: OpenAI
 
-  constructor(private readonly configService: ConfigService) {
-    const apiKey = this.configService.get<string>('OPENAI_API_KEY')
+	constructor(private readonly configService: ConfigService) {
+		const apiKey = this.configService.get<string>('OPENAI_API_KEY')
 
-    this.openai = new OpenAI({
-      apiKey,
-    })
-  }
+		this.openai = new OpenAI({
+			apiKey,
+		})
+	}
 
-  async createCompletion(prompt: string) {
-    const response = await this.openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-    })
-    return response.choices[0].message.content
-  }
+	async createCompletion(prompt: string) {
+		const response = await this.openai.chat.completions.create({
+			model: 'gpt-4o-mini',
+			messages: [{ role: 'user', content: prompt }],
+		})
+		return response.choices[0].message.content
+	}
 
-  async createEmbedding(input: string): Promise<number[]> {
-    const response = await this.openai.embeddings.create({
-      model: 'text-embedding-3-small',
-      input,
-    })
+	async createEmbedding(input: string): Promise<number[]> {
+		const response = await this.openai.embeddings.create({
+			model: 'text-embedding-3-small',
+			input,
+		})
 
-    return response.data[0].embedding
-  }
+		return response.data[0].embedding
+	}
 }

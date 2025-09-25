@@ -1,4 +1,3 @@
-
 import { Slug } from '@/domain/todo/enterprise/entities/value-objects/slug'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
@@ -10,104 +9,103 @@ import request from 'supertest'
 import { UserFactory } from 'test/factories/make-user'
 
 describe('Edit task (E2E)', () => {
-  let app: INestApplication
-  let prisma: PrismaService
-  let userFactory: UserFactory
-  let jwt: JwtService
+	let app: INestApplication
+	let prisma: PrismaService
+	let userFactory: UserFactory
+	let jwt: JwtService
 
-  beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule, DatabaseModule],
-      providers: [UserFactory],
-    }).compile()
+	beforeAll(async () => {
+		const moduleRef = await Test.createTestingModule({
+			imports: [AppModule, DatabaseModule],
+			providers: [UserFactory],
+		}).compile()
 
-    app = moduleRef.createNestApplication()
-    prisma = moduleRef.get(PrismaService)
-    userFactory = moduleRef.get(UserFactory)
-    jwt = moduleRef.get(JwtService)
+		app = moduleRef.createNestApplication()
+		prisma = moduleRef.get(PrismaService)
+		userFactory = moduleRef.get(UserFactory)
+		jwt = moduleRef.get(JwtService)
 
-    await app.init()
-  })
+		await app.init()
+	})
 
-  test('[PATCH] /tasks/:id - successfully edits task', async () => {
-    const user = await userFactory.makePrismaUser()
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+	test('[PATCH] /tasks/:id - successfully edits task', async () => {
+		const user = await userFactory.makePrismaUser()
+		const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const task = await prisma.task.create({
-      data: {
-        title: 'Original Task',
-        description: 'Original description',
-        priority: 'MEDIUM',
-        status: 'PENDING',
-        slug: Slug.create('Original Task').value,
-        authorId: user.id.toString(),
-      },
-    })
+		const task = await prisma.task.create({
+			data: {
+				title: 'Original Task',
+				description: 'Original description',
+				priority: 'MEDIUM',
+				status: 'PENDING',
+				slug: Slug.create('Original Task').value,
+				authorId: user.id.toString(),
+			},
+		})
 
-    const response = await request(app.getHttpServer())
-      .patch(`/tasks/${task.id}`)
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        title: 'Updated Task',
-        description: 'Updated description',
-        priority: 'HIGH',
-        status: 'IN_PROGRESS',
-      })
+		const response = await request(app.getHttpServer())
+			.patch(`/tasks/${task.id}`)
+			.set('Authorization', `Bearer ${accessToken}`)
+			.send({
+				title: 'Updated Task',
+				description: 'Updated description',
+				priority: 'HIGH',
+				status: 'IN_PROGRESS',
+			})
 
-    expect(response.statusCode).toBe(204)
+		expect(response.statusCode).toBe(204)
 
-    const updatedTask = await prisma.task.findUnique({ where: { id: task.id } })
-    expect(updatedTask).toBeTruthy()
-    expect(updatedTask?.title).toBe('Updated Task')
-    expect(updatedTask?.description).toBe('Updated description')
-    expect(updatedTask?.priority).toBe('HIGH')
-    expect(updatedTask?.status).toBe('IN_PROGRESS')
-  })
+		const updatedTask = await prisma.task.findUnique({ where: { id: task.id } })
+		expect(updatedTask).toBeTruthy()
+		expect(updatedTask?.title).toBe('Updated Task')
+		expect(updatedTask?.description).toBe('Updated description')
+		expect(updatedTask?.priority).toBe('HIGH')
+		expect(updatedTask?.status).toBe('IN_PROGRESS')
+	})
 
-  test('[PATCH] /tasks/:id - cannot edit task of another user', async () => {
-    const user1 = await userFactory.makePrismaUser()
-    const user2 = await userFactory.makePrismaUser()
-    const accessToken = jwt.sign({ sub: user1.id.toString() })
+	test('[PATCH] /tasks/:id - cannot edit task of another user', async () => {
+		const user1 = await userFactory.makePrismaUser()
+		const user2 = await userFactory.makePrismaUser()
+		const accessToken = jwt.sign({ sub: user1.id.toString() })
 
-    const task = await prisma.task.create({
-      data: {
-        title: 'Another user task',
-        description: 'Task description',
-        priority: 'MEDIUM',
-        status: 'PENDING',
-        slug: Slug.create('Original Task').value,
-        authorId: user2.id.toString(),
-      },
-    })
+		const task = await prisma.task.create({
+			data: {
+				title: 'Another user task',
+				description: 'Task description',
+				priority: 'MEDIUM',
+				status: 'PENDING',
+				slug: Slug.create('Original Task').value,
+				authorId: user2.id.toString(),
+			},
+		})
 
-    const response = await request(app.getHttpServer())
-      .patch(`/tasks/${task.id}`)
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        title: 'Updated Title',
-        description: 'Updated description',
-        priority: 'HIGH',
-        status: 'COMPLETED',
-      })
+		const response = await request(app.getHttpServer())
+			.patch(`/tasks/${task.id}`)
+			.set('Authorization', `Bearer ${accessToken}`)
+			.send({
+				title: 'Updated Title',
+				description: 'Updated description',
+				priority: 'HIGH',
+				status: 'COMPLETED',
+			})
 
-    expect(response.statusCode).toBe(401)
-  })
+		expect(response.statusCode).toBe(401)
+	})
 
-  test('[PATCH] /tasks/:id - task not found', async () => {
-    const user = await userFactory.makePrismaUser()
-    const accessToken = jwt.sign({ sub: user.id.toString() })
+	test('[PATCH] /tasks/:id - task not found', async () => {
+		const user = await userFactory.makePrismaUser()
+		const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const response = await request(app.getHttpServer())
-      .patch('/tasks/non-existing-id')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        title: 'Updated Title',
-        description: 'Updated description',
-        priority: 'HIGH',
-        status: 'COMPLETED',
-      })
+		const response = await request(app.getHttpServer())
+			.patch('/tasks/non-existing-id')
+			.set('Authorization', `Bearer ${accessToken}`)
+			.send({
+				title: 'Updated Title',
+				description: 'Updated description',
+				priority: 'HIGH',
+				status: 'COMPLETED',
+			})
 
-    expect(response.statusCode).toBe(409)
-  })
+		expect(response.statusCode).toBe(409)
+	})
 })
-

@@ -3,8 +3,8 @@ import { DatabaseModule } from '../../database/database.module'
 import { LogService } from './log.service'
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [LogService],
-  exports: [LogService],
+	imports: [DatabaseModule],
+	providers: [LogService],
+	exports: [LogService],
 })
-export class LogModule { }
+export class LogModule {}

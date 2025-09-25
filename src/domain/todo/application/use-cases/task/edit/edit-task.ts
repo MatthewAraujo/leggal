@@ -1,60 +1,58 @@
 import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Injectable } from '@nestjs/common'
 import { TaskPriority, TaskStatus } from '@/domain/todo/enterprise/entities/task'
 import { Task } from '@/domain/todo/enterprise/entities/task'
+import { Injectable } from '@nestjs/common'
 import { TasksRepository } from '../../../repositories/task-repository'
 
 interface EditTaskUseCaseRequest {
-  authorId: string
-  taskId: string
-  title: string
-  description: string
-  priority: TaskPriority
-  status: TaskStatus
+	authorId: string
+	taskId: string
+	title: string
+	description: string
+	priority: TaskPriority
+	status: TaskStatus
 }
 
 type EditTaskUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
-  {
-    task: Task
-  }
+	ResourceNotFoundError | NotAllowedError,
+	{
+		task: Task
+	}
 >
 
 @Injectable()
 export class EditTaskUseCase {
-  constructor(
-    private tasksRepository: TasksRepository,
-  ) { }
+	constructor(private tasksRepository: TasksRepository) {}
 
-  async execute({
-    authorId,
-    taskId,
-    title,
-    description,
-    priority,
-    status,
-  }: EditTaskUseCaseRequest): Promise<EditTaskUseCaseResponse> {
-    const task = await this.tasksRepository.findById(taskId)
+	async execute({
+		authorId,
+		taskId,
+		title,
+		description,
+		priority,
+		status,
+	}: EditTaskUseCaseRequest): Promise<EditTaskUseCaseResponse> {
+		const task = await this.tasksRepository.findById(taskId)
 
-    if (!task) {
-      return left(new ResourceNotFoundError())
-    }
+		if (!task) {
+			return left(new ResourceNotFoundError())
+		}
 
-    if (authorId !== task.authorId.toString()) {
-      return left(new NotAllowedError())
-    }
+		if (authorId !== task.authorId.toString()) {
+			return left(new NotAllowedError())
+		}
 
-    task.title = title
-    task.description = description
-    task.priority = priority
-    task.status = status
+		task.title = title
+		task.description = description
+		task.priority = priority
+		task.status = status
 
-    await this.tasksRepository.save(task)
+		await this.tasksRepository.save(task)
 
-    return right({
-      task,
-    })
-  }
+		return right({
+			task,
+		})
+	}
 }

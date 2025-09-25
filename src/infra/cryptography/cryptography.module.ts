@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common'
 
-
-import { BcryptHasher } from './bcrypt-hasher'
-import { JwtEncrypter } from './jwt-encrypter'
 import { Encrypter } from '@/domain/todo/application/cryptography/encrypter'
 import { HashComparer } from '@/domain/todo/application/cryptography/hash-comparer'
 import { HashGenerator } from '@/domain/todo/application/cryptography/hash-generator'
+import { BcryptHasher } from './bcrypt-hasher'
+import { JwtEncrypter } from './jwt-encrypter'
 
 @Module({
 	providers: [
@@ -15,4 +14,4 @@ import { HashGenerator } from '@/domain/todo/application/cryptography/hash-gener
 	],
 	exports: [Encrypter, HashComparer, HashGenerator],
 })
-export class CryptographyModule { }
+export class CryptographyModule {}

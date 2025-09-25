@@ -2,7 +2,7 @@
 
 ## **To-Do: Desafio Técnico Fullstack + IA**
 ### unitários
- [] - resolver bug de nao autorizado
+ [X] - resolver bug de nao autorizado
 
 ### **1️⃣ Setup Inicial**
 
@@ -53,7 +53,7 @@
 
 * [X] Função para gerar título resumido a partir do texto livre
 * [X] Função para gerar descrição resumida
-* [ ] Cache simples de prompts/respostas
+* [X] Cache simples de prompts/respostas
 
 #### Priorização
 

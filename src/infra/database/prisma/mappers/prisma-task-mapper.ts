@@ -12,7 +12,7 @@ export class PrismaTaskMapper {
 				title: raw.title,
 				slug: Slug.create(raw.slug),
 				priority: TaskPriority[raw.priority],
-				status: TaskStatus[raw.status]
+				status: TaskStatus[raw.status],
 			},
 			new UniqueEntityID(raw.id),
 		)
@@ -26,7 +26,7 @@ export class PrismaTaskMapper {
 			title: task.title,
 			slug: task.slug.value,
 			priority: task.priority,
-			status: task.status
+			status: task.status,
 		}
 	}
 }

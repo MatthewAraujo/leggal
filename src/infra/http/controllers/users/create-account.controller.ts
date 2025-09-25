@@ -1,6 +1,7 @@
 import { UserAlreadyExistsError } from '@/domain/todo/application/use-cases/errors/user-already-exists-error'
 import { RegisterUserUseCase } from '@/domain/todo/application/use-cases/user/register/user-student'
 import { Public } from '@/infra/auth/public'
+import { CreateAccountDto } from '@/infra/http/dtos/create-account.dto'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
 	BadRequestException,
@@ -11,9 +12,8 @@ import {
 	Post,
 	UsePipes,
 } from '@nestjs/common'
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
-import { CreateAccountDto } from '@/infra/http/dtos/create-account.dto'
 
 const createAccountBodySchema = z.object({
 	name: z.string(),
@@ -27,7 +27,7 @@ type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 @Controller('/accounts')
 @Public()
 export class CreateAccountController {
-	constructor(private registerUser: RegisterUserUseCase) { }
+	constructor(private registerUser: RegisterUserUseCase) {}
 
 	@Post()
 	@HttpCode(201)

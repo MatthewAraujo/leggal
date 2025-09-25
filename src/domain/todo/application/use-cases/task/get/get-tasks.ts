@@ -1,43 +1,37 @@
-import { Injectable } from '@nestjs/common'
 import { Either, left, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Task } from '@/domain/todo/enterprise/entities/task'
+import { Injectable } from '@nestjs/common'
 import { TasksRepository } from '../../../repositories/task-repository'
 import { UsersRepository } from '../../../repositories/users-repository'
-import { Task } from '@/domain/todo/enterprise/entities/task'
 import { UserNotFoundError } from '../../errors/user-not-found-error'
 
 interface fetchTasksUseCaseRequest {
-  authorId: string
-  page: number
+	authorId: string
+	page: number
 }
 
-type fetchTasksUseCaseResponse = Either<
-  UserNotFoundError | null,
-  { tasks: Task[] }
->
+type fetchTasksUseCaseResponse = Either<UserNotFoundError | null, { tasks: Task[] }>
 
 @Injectable()
 export class FetchTasksUseCase {
-  constructor(
-    private tasksRepository: TasksRepository,
-    private usersRepository: UsersRepository,
-  ) { }
+	constructor(
+		private tasksRepository: TasksRepository,
+		private usersRepository: UsersRepository,
+	) {}
 
-  async execute({ authorId, page }: fetchTasksUseCaseRequest): Promise<fetchTasksUseCaseResponse> {
-    const userId = new UniqueEntityID(authorId)
+	async execute({ authorId, page }: fetchTasksUseCaseRequest): Promise<fetchTasksUseCaseResponse> {
+		const userId = new UniqueEntityID(authorId)
 
-    const user = await this.usersRepository.findById(userId.toString())
-    if (!user) {
-      return left(new UserNotFoundError())
-    }
+		const user = await this.usersRepository.findById(userId.toString())
+		if (!user) {
+			return left(new UserNotFoundError())
+		}
 
-    const tasks = await this.tasksRepository.findAllByAuthorId(userId.toString(), { page })
+		const tasks = await this.tasksRepository.findAllByAuthorId(userId.toString(), { page })
 
-    if (!tasks)
-      return right({ tasks: [] })
+		if (!tasks) return right({ tasks: [] })
 
-
-    return right({ tasks })
-  }
+		return right({ tasks })
+	}
 }
-

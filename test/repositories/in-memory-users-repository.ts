@@ -3,7 +3,6 @@ import { UsersRepository } from '@/domain/todo/application/repositories/users-re
 import { User } from '@/domain/todo/enterprise/entities/user'
 
 export class InMemoryUsersRepository implements UsersRepository {
-
 	public items: User[] = []
 
 	async findByEmail(email: string) {
