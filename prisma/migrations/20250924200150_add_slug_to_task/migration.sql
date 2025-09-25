@@ -6,7 +6,7 @@
 
 */
 -- AlterTable
-ALTER TABLE "public"."tasks" ADD COLUMN     "slug" TEXT NOT NULL;
+ALTER TABLE "tasks" ADD COLUMN     "slug" TEXT NOT NULL;
 
 -- CreateIndex
-CREATE UNIQUE INDEX "tasks_slug_key" ON "public"."tasks"("slug");
+CREATE UNIQUE INDEX "tasks_slug_key" ON "tasks"("slug");
