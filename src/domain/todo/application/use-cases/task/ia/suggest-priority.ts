@@ -7,66 +7,69 @@ import { InvalidOpenAiResponseError } from '../../errors/invalid-openai-response
 import { OpenAiNoResponseError } from '../../errors/openai-no-response-error'
 
 interface SuggestPriorityUseCaseRequest {
-	title: string
-	description: string
+  title: string
+  description: string
 }
 
 type SuggestPriorityUseCaseResponse = Either<
-	OpenAiNoResponseError | InvalidOpenAiResponseError,
-	{ priority: TaskPriority; reason: string }
+  OpenAiNoResponseError | InvalidOpenAiResponseError,
+  { priority: TaskPriority; reason: string }
 >
 
 @Injectable()
 export class SuggestPriorityUseCase {
-	constructor(
-		private readonly openaiService: OpenAiService,
-		private readonly aiCacheService: AICacheService,
-	) {}
+  constructor(
+    private readonly openaiService: OpenAiService,
+    private readonly aiCacheService: AICacheService,
+  ) { }
 
-	async execute({
-		title,
-		description,
-	}: SuggestPriorityUseCaseRequest): Promise<SuggestPriorityUseCaseResponse> {
-		const prompt = `
-      Analyze the following task and suggest an appropriate priority: LOW, MEDIUM, or HIGH.
-      Return only a JSON object with the "priority" field.
+  async execute({
+    title,
+    description,
+  }: SuggestPriorityUseCaseRequest): Promise<SuggestPriorityUseCaseResponse> {
 
-      Task title: "${title}"
-      Task description: "${description}"
+    const prompt = `
+    Analise a seguinte tarefa e sugira uma prioridade apropriada: BAIXA, MÉDIA ou ALTA.
+    Retorne apenas um objeto JSON com o campo "priority" e "reason".
 
-      Type of priority
-      ['LOW','MEDIUM','HIGH']
-      Example response format:
-      {
-        "priority": "HIGH"
-        "reason": "This task is HIGH priority because it has a critical deadline and directly impacts project delivery."
+    Título da tarefa: "${title}"
+    Descrição da tarefa: "${description}"
+
+    Tipos de prioridade:
+    ['LOW','MEDIUM','HIGH']
+
+    Exemplo de formato de resposta:
+    {
+      "priority": "HIGH",
+      "reason": "Esta tarefa tem prioridade ALTA porque possui um prazo crítico e impacta diretamente a entrega do projeto."
+    }
+`
+
+
+    let openAiResponse = await this.aiCacheService.getCachedResponse(prompt)
+
+    if (!openAiResponse) {
+      openAiResponse = await this.openaiService.createCompletion(prompt)
+
+      if (openAiResponse) {
+        await this.aiCacheService.setCachedResponse(prompt, openAiResponse, 7200)
       }
-    `
+    }
 
-		let openAiResponse = await this.aiCacheService.getCachedResponse(prompt)
+    if (!openAiResponse) {
+      return left(new OpenAiNoResponseError())
+    }
 
-		if (!openAiResponse) {
-			openAiResponse = await this.openaiService.createCompletion(prompt)
+    let parsed: any
+    try {
+      parsed = JSON.parse(openAiResponse)
+    } catch (err) {
+      return left(new InvalidOpenAiResponseError())
+    }
 
-			if (openAiResponse) {
-				await this.aiCacheService.setCachedResponse(prompt, openAiResponse, 7200)
-			}
-		}
+    const priority = parsed.priority as TaskPriority
+    const reason = parsed.reason
 
-		if (!openAiResponse) {
-			return left(new OpenAiNoResponseError())
-		}
-
-		let parsed: any
-		try {
-			parsed = JSON.parse(openAiResponse)
-		} catch (err) {
-			return left(new InvalidOpenAiResponseError())
-		}
-
-		const priority = parsed.priority as TaskPriority
-		const reason = parsed.reason
-
-		return right({ priority, reason })
-	}
+    return right({ priority, reason })
+  }
 }

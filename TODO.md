@@ -10,7 +10,7 @@
 * [X] Inicializar projeto monorepo ou separado (backend / frontend / IA)
 * [X] Configurar Dockerfile e docker-compose para ambiente local
 * [X] Configurar ESLint / Prettier / Husky / lint-staged
-* [ ] Criar README inicial com instruções de setup
+* [X] Criar README inicial com instruções de setup
 
 ---
 
@@ -123,7 +123,7 @@
 
 ### **9️⃣ Bônus (Opcional)**
 
-* [ ] CI/CD (GitHub Actions / GitLab CI)
+* [X] CI/CD (GitHub Actions / GitLab CI)
 * [ ] Feature flags (LaunchDarkly ou config simples)
 * [ ] Rate limiting / retry em endpoints críticos
 * [ ] Monitoramento básico (Prometheus / Grafana ou logs)
