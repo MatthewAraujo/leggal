@@ -2,6 +2,7 @@ import { UserAlreadyExistsError } from '@/domain/todo/application/use-cases/erro
 import { RegisterUserUseCase } from '@/domain/todo/application/use-cases/user/register/user-student'
 import { Public } from '@/infra/auth/public'
 import { CreateAccountDto } from '@/infra/http/dtos/create-account.dto'
+import { CreateAccountResponseDto } from '@/infra/http/dtos/users/create-account-response.dto'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
 	BadRequestException,
@@ -27,13 +28,13 @@ type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 @Controller('/accounts')
 @Public()
 export class CreateAccountController {
-	constructor(private registerUser: RegisterUserUseCase) {}
+	constructor(private registerUser: RegisterUserUseCase) { }
 
 	@Post()
 	@HttpCode(201)
 	@ApiOperation({ summary: 'Criar nova conta de usuário' })
 	@ApiBody({ type: CreateAccountDto })
-	@ApiResponse({ status: 201, description: 'Usuário criado com sucesso' })
+	@ApiResponse({ status: 201, description: 'Usuário criado com sucesso', type: CreateAccountResponseDto })
 	@ApiResponse({ status: 409, description: 'Usuário já existe' })
 	@ApiResponse({ status: 400, description: 'Dados inválidos' })
 	@UsePipes(new ZodValidationPipe(createAccountBodySchema))
@@ -55,6 +56,13 @@ export class CreateAccountController {
 				default:
 					throw new BadRequestException(error.message)
 			}
+		}
+
+		const user = result.value.user
+
+		return {
+			message: 'Usuário criado com sucesso',
+			userId: user.id.toString(),
 		}
 	}
 }

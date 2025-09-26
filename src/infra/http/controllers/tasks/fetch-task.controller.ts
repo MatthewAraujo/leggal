@@ -5,6 +5,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
+import { GetTasksResponseDto } from '../../dtos/task/task-response.dto'
 import { TaskPresenter } from '../../presenters/task-presenter'
 
 const pageQueryParamSchema = z
@@ -27,7 +28,7 @@ export class FetchTasksController {
   @Get()
   @ApiOperation({ summary: 'Listar tarefas do usuário autenticado (paginado)' })
   @ApiQuery({ name: 'page', required: false, description: 'Página (>= 1)', example: 1 })
-  @ApiResponse({ status: 200, description: 'Lista de tarefas retornada com sucesso' })
+  @ApiResponse({ status: 200, description: 'Lista de tarefas retornada com sucesso', type: GetTasksResponseDto })
   @ApiResponse({ status: 400, description: 'Parâmetros inválidos' })
   async handle(
     @Query('page', queryValidationPipe) page: PageQueryParamSchema,

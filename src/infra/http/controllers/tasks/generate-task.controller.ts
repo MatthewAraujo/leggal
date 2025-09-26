@@ -15,6 +15,7 @@ import {
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
 import { GenerateTaskDto } from '../../dtos/task/generate-task.dto'
+import { GenerateTaskResponseDto } from '../../dtos/task/task-response.dto'
 import { TaskPresenter } from '../../presenters/task-presenter'
 
 const generateTaskBodySchema = z.object({
@@ -34,7 +35,7 @@ export class GenerateTaskController {
   @HttpCode(201)
   @ApiOperation({ summary: 'Gerar tarefa via IA a partir de texto' })
   @ApiBody({ type: GenerateTaskDto })
-  @ApiResponse({ status: 201, description: 'Tarefa gerada e criada com sucesso' })
+  @ApiResponse({ status: 201, description: 'Tarefa gerada e criada com sucesso', type: GenerateTaskResponseDto })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 500, description: 'Erro interno do servidor - OpenAI indisponível' })
   async handle(

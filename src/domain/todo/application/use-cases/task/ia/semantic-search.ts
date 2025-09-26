@@ -6,45 +6,42 @@ import { Injectable } from '@nestjs/common'
 import { TasksRepository } from '../../../repositories/task-repository'
 
 interface SemanticSearchTaskUseCaseRequest {
-	title: string
-	description: string
+  description: string
 }
 
 type SemanticSearchTaskUseCaseResponse = Either<null, { tasks: Task[] }>
 
 @Injectable()
 export class SemanticSearchEmbeddingUseCase {
-	constructor(
-		private tasksRepository: TasksRepository,
-		private openaiService: OpenAiService,
-		private aiCacheService: AICacheService,
-	) {}
+  constructor(
+    private tasksRepository: TasksRepository,
+    private openaiService: OpenAiService,
+    private aiCacheService: AICacheService,
+  ) { }
 
-	async execute({
-		title,
-		description,
-	}: SemanticSearchTaskUseCaseRequest): Promise<SemanticSearchTaskUseCaseResponse> {
-		const searchText = `${title} ${description}`
+  async execute({
+    description,
+  }: SemanticSearchTaskUseCaseRequest): Promise<SemanticSearchTaskUseCaseResponse> {
 
-		const cacheKey = `embedding:${searchText}`
-		const cachedEmbedding = await this.aiCacheService.getCachedResponse(cacheKey)
+    const cacheKey = `embedding:${description}`
+    const cachedEmbedding = await this.aiCacheService.getCachedResponse(cacheKey)
 
-		let embedding: number[]
+    let embedding: number[]
 
-		if (cachedEmbedding) {
-			try {
-				embedding = JSON.parse(cachedEmbedding)
-			} catch (error) {
-				embedding = await this.openaiService.createEmbedding(searchText)
-				await this.aiCacheService.setCachedResponse(cacheKey, JSON.stringify(embedding), 7200)
-			}
-		} else {
-			embedding = await this.openaiService.createEmbedding(searchText)
-			await this.aiCacheService.setCachedResponse(cacheKey, JSON.stringify(embedding), 7200)
-		}
+    if (cachedEmbedding) {
+      try {
+        embedding = JSON.parse(cachedEmbedding)
+      } catch (error) {
+        embedding = await this.openaiService.createEmbedding(description)
+        await this.aiCacheService.setCachedResponse(cacheKey, JSON.stringify(embedding), 7200)
+      }
+    } else {
+      embedding = await this.openaiService.createEmbedding(description)
+      await this.aiCacheService.setCachedResponse(cacheKey, JSON.stringify(embedding), 7200)
+    }
 
-		const task = await this.tasksRepository.findSimilarTasks(embedding)
+    const task = await this.tasksRepository.findSimilarTasks(embedding)
 
-		return right({ tasks: task })
-	}
+    return right({ tasks: task })
+  }
 }

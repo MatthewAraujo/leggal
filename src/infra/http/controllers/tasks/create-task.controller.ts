@@ -15,6 +15,7 @@ import {
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
 import { CreateTaskDto } from '../../dtos/task/create-task.dto'
+import { CreateTaskResponseDto } from '../../dtos/task/task-response.dto'
 import { TaskPresenter } from '../../presenters/task-presenter'
 
 const createTaskBodySchema = z.object({
@@ -37,8 +38,9 @@ export class CreateTaskController {
   @HttpCode(201)
   @ApiOperation({ summary: 'Criar nova tarefa' })
   @ApiBody({ type: CreateTaskDto })
-  @ApiResponse({ status: 201, description: 'Tarefa criada com sucesso' })
+  @ApiResponse({ status: 201, description: 'Tarefa criada com sucesso', type: CreateTaskResponseDto })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 409, description: 'Tarefa com mesmo título já existe' })
   async handle(
     @Body(bodyValidationPipe) body: CreateTaskBodySchema,
     @CurrentUser() user: UserPayload,
