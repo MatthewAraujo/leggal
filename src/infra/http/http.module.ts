@@ -14,7 +14,6 @@ import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
 import { ServicesModule } from '../services/services.module'
 import { HealthController } from './controllers/health/health.controller'
-import { LogsController } from './controllers/logs/logs.controller'
 import { CreateTaskController } from './controllers/tasks/create-task.controller'
 import { DeleteTaskController } from './controllers/tasks/delete-task.controller'
 import { EditTaskController } from './controllers/tasks/edit-task.controller'
@@ -32,7 +31,6 @@ import { RefreshTokenController } from './controllers/users/refresh-token.contro
     CreateAccountController,
     AuthenticateController,
     RefreshTokenController,
-    LogsController,
     HealthController,
     CreateTaskController,
     EditTaskController,
@@ -41,7 +39,6 @@ import { RefreshTokenController } from './controllers/users/refresh-token.contro
     GenerateTaskController,
     SuggestPriorityController,
     SemanticSearchController,
-    LogsController
 
   ],
   providers: [
