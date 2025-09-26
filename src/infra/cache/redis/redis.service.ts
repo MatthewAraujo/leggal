@@ -5,12 +5,7 @@ import Redis, { } from 'ioredis'
 @Injectable()
 export class RedisService extends Redis implements OnModuleDestroy {
   constructor(envService: EnvService) {
-    super({
-      host: envService.get('REDIS_HOST'),
-      port: Number(envService.get('REDIS_PORT')),
-      db: Number(envService.get('REDIS_DB')),
-      password: envService.get('REDIS_PASSWORD')
-    })
+    super(envService.get('REDIS_URL'))
   }
 
   onModuleDestroy() {
