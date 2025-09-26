@@ -1,15 +1,16 @@
 import { z } from 'zod'
 
 export const envSchema = z.object({
-	DATABASE_URL: z.string().url(),
-	JWT_PRIVATE_KEY: z.string(),
-	JWT_PUBLIC_KEY: z.string(),
-	REDIS_HOST: z.string().optional().default('127.0.0.1'),
-	REDIS_PORT: z.coerce.number().optional().default(6379),
-	REDIS_DB: z.coerce.number().optional().default(0),
-	PORT: z.coerce.number().optional().default(3333),
-	OPENAI_API_KEY: z.string(),
-	LOG_LEVEL: z.enum(['error', 'warn', 'log', 'debug', 'verbose']).optional().default('log'),
+  DATABASE_URL: z.string().url(),
+  JWT_PRIVATE_KEY: z.string(),
+  JWT_PUBLIC_KEY: z.string(),
+  REDIS_HOST: z.string().optional(),
+  REDIS_PORT: z.coerce.number().optional().default(6379),
+  REDIS_DB: z.coerce.number().optional().default(0),
+  REDIS_PASSWORD: z.string().optional(),
+  PORT: z.coerce.number().optional().default(3333),
+  OPENAI_API_KEY: z.string(),
+  LOG_LEVEL: z.enum(['error', 'warn', 'log', 'debug', 'verbose']).optional().default('log'),
 })
 
 export type Env = z.infer<typeof envSchema>
