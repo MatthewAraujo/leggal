@@ -7,6 +7,7 @@ import { TasksRepository } from '../../../repositories/task-repository'
 
 interface SemanticSearchTaskUseCaseRequest {
   description: string
+  authorId: string
 }
 
 type SemanticSearchTaskUseCaseResponse = Either<null, { tasks: Task[] }>
@@ -21,6 +22,7 @@ export class SemanticSearchEmbeddingUseCase {
 
   async execute({
     description,
+    authorId
   }: SemanticSearchTaskUseCaseRequest): Promise<SemanticSearchTaskUseCaseResponse> {
 
     const cacheKey = `embedding:${description}`

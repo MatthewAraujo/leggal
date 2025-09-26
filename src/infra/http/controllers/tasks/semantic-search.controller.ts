@@ -7,6 +7,8 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nes
 import { z } from 'zod'
 import { SemanticSearchDto } from '../../dtos/task/semantic-search.dto'
 import { SemanticSearchResponseDto } from '../../dtos/task/task-response.dto'
+import { UserPayload } from '@/infra/auth/jwt.strategy'
+import { CurrentUser } from '@/infra/auth/current-user-decorator'
 
 const semanticSearchBodySchema = z.object({
   description: z.string(),
@@ -26,8 +28,10 @@ export class SemanticSearchController {
   @ApiBody({ type: SemanticSearchDto })
   @ApiResponse({ status: 200, description: 'Retorna as tarefas similares', type: SemanticSearchResponseDto })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
-  async handle(@Body(new ZodValidationPipe(semanticSearchBodySchema)) body: SemanticSearchBody) {
+  async handle(@Body(new ZodValidationPipe(semanticSearchBodySchema)) body: SemanticSearchBody, @CurrentUser() user: UserPayload,
+  ) {
     const { description } = body
+    const authorId = user.sub
 
     const result = await this.semanticSearchUseCase.execute({ description })
 
