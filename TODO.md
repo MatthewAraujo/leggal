@@ -75,16 +75,16 @@
 
 #### Autenticação
 
-* [ ] Tela de login / logout / refresh token
-* [ ] Guardas de rota para proteger páginas privadas
+* [X] Tela de login / logout / refresh token
+* [X] Guardas de rota para proteger páginas privadas
 
 #### Dashboard de Tarefas
 
-* [ ] Listagem de tarefas com filtros e paginação
-* [ ] Cards ou tabela mostrando: título, descrição, prioridade, justificativa IA
-* [ ] Busca por texto (query para backend IA)
-* [ ] Formulário para criar / atualizar tarefas
-* [ ] Feedback visual das ações (loading, sucesso, erro)
+* [X] Listagem de tarefas com filtros e paginação
+* [X] Cards ou tabela mostrando: título, descrição, prioridade, justificativa IA
+* [X] Busca por texto (query para backend IA)
+* [X] Formulário para criar / atualizar tarefas
+* [X] Feedback visual das ações (loading, sucesso, erro)
 
 ---
 
