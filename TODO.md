@@ -106,10 +106,10 @@
 
 ### **7️⃣ DevEx / Ops**
 
-* [ ] Docker Compose para backend + frontend + banco
+* [X] Docker Compose para backend + frontend + banco
 * [X] Logs de aplicação (console + arquivo)
 * [X] Paginação / performance / índices
-* [ ] Configurar variáveis de ambiente seguras
+* [X] Configurar variáveis de ambiente seguras
 
 ---
 
@@ -117,7 +117,7 @@
 
 * [X] Swagger ou Postman para API
 * [ ] README explicando setup, rotas, IA, testes
-* [ ] DECISIONS.md: decisões de arquitetura e bibliotecas
+* [] DECISIONS.md: decisões de arquitetura e bibliotecas
 
 ---
 
