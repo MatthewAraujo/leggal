@@ -5,8 +5,8 @@ import { LogService } from './log/log.service'
 import { OpenAiService } from './openai/openai.service'
 
 @Module({
-	imports: [DatabaseModule, EnvModule],
-	providers: [OpenAiService, LogService],
-	exports: [OpenAiService, LogService, DatabaseModule],
+  imports: [DatabaseModule, EnvModule],
+  providers: [OpenAiService, LogService],
+  exports: [OpenAiService, LogService, DatabaseModule],
 })
-export class ServicesModule {}
+export class ServicesModule { }

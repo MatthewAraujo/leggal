@@ -12,7 +12,6 @@ import { Module } from '@nestjs/common'
 import { CacheModule } from '../cache/cache.module'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
-import { LogModule } from '../services/log/log.module'
 import { ServicesModule } from '../services/services.module'
 import { HealthController } from './controllers/health/health.controller'
 import { LogsController } from './controllers/logs/logs.controller'
@@ -28,32 +27,34 @@ import { CreateAccountController } from './controllers/users/create-account.cont
 import { RefreshTokenController } from './controllers/users/refresh-token.controller'
 
 @Module({
-	imports: [DatabaseModule, CryptographyModule, CacheModule, ServicesModule],
-	controllers: [
-		CreateAccountController,
-		AuthenticateController,
-		RefreshTokenController,
-		LogsController,
-		HealthController,
-		CreateTaskController,
-		EditTaskController,
-		FetchTasksController,
-		DeleteTaskController,
-		GenerateTaskController,
-		SuggestPriorityController,
-		SemanticSearchController,
-	],
-	providers: [
-		AuthenticateUserUseCase,
-		RegisterUserUseCase,
-		RefreshTokenUseCase,
-		CreateTaskUseCase,
-		EditTaskUseCase,
-		FetchTasksUseCase,
-		DeleteTaskUseCase,
-		GenerateTaskUseCase,
-		SuggestPriorityUseCase,
-		SemanticSearchEmbeddingUseCase,
-	],
+  imports: [DatabaseModule, CryptographyModule, CacheModule, ServicesModule],
+  controllers: [
+    CreateAccountController,
+    AuthenticateController,
+    RefreshTokenController,
+    LogsController,
+    HealthController,
+    CreateTaskController,
+    EditTaskController,
+    FetchTasksController,
+    DeleteTaskController,
+    GenerateTaskController,
+    SuggestPriorityController,
+    SemanticSearchController,
+    LogsController
+
+  ],
+  providers: [
+    AuthenticateUserUseCase,
+    RegisterUserUseCase,
+    RefreshTokenUseCase,
+    CreateTaskUseCase,
+    EditTaskUseCase,
+    FetchTasksUseCase,
+    DeleteTaskUseCase,
+    GenerateTaskUseCase,
+    SuggestPriorityUseCase,
+    SemanticSearchEmbeddingUseCase,
+  ],
 })
-export class HttpModule {}
+export class HttpModule { }
