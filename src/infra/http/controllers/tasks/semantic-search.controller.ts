@@ -33,7 +33,7 @@ export class SemanticSearchController {
     const { description } = body
     const authorId = user.sub
 
-    const result = await this.semanticSearchUseCase.execute({ description })
+    const result = await this.semanticSearchUseCase.execute({ description, authorId })
 
     if (result.isLeft()) {
       throw new BadRequestException('Erro ao buscar tasks similares')

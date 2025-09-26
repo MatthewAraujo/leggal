@@ -42,7 +42,7 @@ export class SemanticSearchEmbeddingUseCase {
       await this.aiCacheService.setCachedResponse(cacheKey, JSON.stringify(embedding), 7200)
     }
 
-    const task = await this.tasksRepository.findSimilarTasks(embedding)
+    const task = await this.tasksRepository.findSimilarTasks(embedding, authorId)
 
     return right({ tasks: task })
   }
